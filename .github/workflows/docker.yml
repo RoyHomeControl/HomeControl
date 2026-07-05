@@ -69,4 +69,4 @@ jobs:
         run: |
           gh workflow run deploy.yml \
                 --repo roy752/homelab_infra \
-                --ref main
+                --ref master
