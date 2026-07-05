@@ -67,8 +67,6 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.SUPER_TOKEN }}
         run: |
-          gh api \
-            -X POST \
-            repos/roy752/homelab-infra/actions/workflows/deploy.yml/dispatches \
-            -F ref=main
-
+          gh workflow run deploy.yml \
+                --repo roy752/homelab-infra \
+                --ref main
