@@ -62,3 +62,13 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
+      
+      - name: Trigger homelab deployment
+        env:
+          GH_TOKEN: ${{ secrets.SUPER_TOKEN }}
+        run: |
+          gh api \
+            -X POST \
+            repos/roy752/homelab-infra/actions/workflows/deploy.yml/dispatches \
+            -F ref=main
+
