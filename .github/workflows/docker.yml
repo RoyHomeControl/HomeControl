@@ -68,5 +68,5 @@ jobs:
           GH_TOKEN: ${{ secrets.SUPER_TOKEN }}
         run: |
           gh workflow run deploy.yml \
-                --repo roy752/homelab-infra \
+                --repo roy752/homelab_infra \
                 --ref main
