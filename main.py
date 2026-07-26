@@ -1,6 +1,7 @@
 # %%
 from fastapi import FastAPI
 import requests, json
+import couchdb
 
 # %%
 app = FastAPI()
@@ -21,7 +22,9 @@ def get_hat():
     url = get_url("hat")
     response = requests.get(url=url)
     response.raise_for_status()
-    return json.loads(response.text)
+
+    data = response.json()
+    return data
 
 # %%
 @app.post(path="/ir/decode")
@@ -46,6 +49,7 @@ def ir_power_off():
     url = get_url(uri="ir/poweroff")
     response = requests.post(url=url)
     response.raise_for_status()
+    couchdb.update_aircon_status(power=False)
     return json.loads(response.text)
 
 # %%
@@ -54,6 +58,7 @@ def ir_power_on():
     url = get_url(uri="ir/poweron")
     response = requests.post(url)
     response.raise_for_status()
+    couchdb.update_aircon_status(power=True)
     return json.loads(response.text)
 
 # %%
@@ -62,6 +67,7 @@ def ir_adjust_temperature(temp: int = 25):
     url = get_url(uri="ir/temperature")
     response = requests.post(url=url, data={"value": temp})
     response.raise_for_status()
+    couchdb.update_aircon_status(temp=temp)
     return json.loads(response.text)
 
 # %%
@@ -70,6 +76,7 @@ def ir_adjust_wind(wind: int = 4):
     url = get_url(uri="ir/wind")
     response = requests.post(url=url, data={"value": wind})
     response.raise_for_status()
+    couchdb.update_aircon_status(windDayeon=wind)
     return json.loads(response.text)
 
 # %%
@@ -79,6 +86,27 @@ def ir_status():
     response = requests.get(url=url)
     response.raise_for_status()
     return json.loads(response.text)
+
+# %%
+# startup - 주기적으로 온/습도 저장
+import threading
+import time
+DHT_SAVE_INTERVAL_SEC = 60 * 5
+def dht_logger():
+    while True:
+        try:
+            data = get_hat()
+            couchdb.insert_dht_log(humidity=data['humidity'], temperature=data["temperature"])
+        except Exception as e:
+            print(e)
+        time.sleep(DHT_SAVE_INTERVAL_SEC)
+
+@app.on_event("startup")
+def startup():
+    threading.Thread(
+        target = dht_logger,
+        daemon=True,
+    ).start()
 
 
 # %%
