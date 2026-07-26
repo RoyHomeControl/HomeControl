@@ -65,7 +65,7 @@ jobs:
       
       - name: Trigger homelab deployment
         env:
-          GH_TOKEN: ${{ secrets.SUPER_TOKEN }}
+          GH_TOKEN: ${{ secrets.ORG_TOKEN }}
         run: |
           gh workflow run deploy.yml \
                 --repo royhomecontrol/homelab_infra \
