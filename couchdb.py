@@ -39,7 +39,6 @@ def update_aircon_status(**kwargs):
     couch_put(doc)
 
 def insert_dht_log(humidity, temperature):
-
     doc = {
         "type": "dht_log",
         "time": datetime.now(timezone.utc).isoformat(),

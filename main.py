@@ -2,6 +2,7 @@
 from fastapi import FastAPI
 import requests, json
 import couchdb
+import datetime
 
 # %%
 app = FastAPI()
@@ -97,6 +98,7 @@ def dht_logger():
         try:
             data = get_hat()
             couchdb.insert_dht_log(humidity=data['humidity'], temperature=data["temperature"])
+            print(datetime.datetime.now(), "온/습도 로깅 성공", data["humidity"], data["temperature"])
         except Exception as e:
             print(e)
         time.sleep(DHT_SAVE_INTERVAL_SEC)
@@ -107,6 +109,7 @@ def startup():
         target = dht_logger,
         daemon=True,
     ).start()
+    print("온/습도 로거 시작")
 
 
 # %%
