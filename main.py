@@ -87,6 +87,7 @@ def ir_adjust_wind(wind: int = 4):
     url = get_url(uri="ir/wind")
     response = requests.post(url=url, data={"value": wind}, timeout=DEFAULT_TIMEOUT)
     response.raise_for_status()
+    logging.info(f"wind adjust:windDahyeon={str(wind)}")
     couchdb.update_aircon_status(windDahyeon=wind)
     return {
             "status": "ok",

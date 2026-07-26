@@ -2,6 +2,7 @@
 import requests, json
 from datetime import datetime, timezone
 from secret import *
+import logging
 
 COUCH_URL = "http://100.108.137.1:5984"
 COUCH_DB = "homecontrol"
@@ -33,6 +34,7 @@ def update_aircon_status(**kwargs):
 
     for k, v in kwargs.items():
         doc[k] = v
+        logging.info(v);
 
     doc["lastChanged"] = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%SZ")
 
