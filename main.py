@@ -7,7 +7,7 @@ import logging
 
 # %%
 app = FastAPI()
-
+DEFAULT_TIMEOUT = 3
 
 @app.get('/health')
 def health():
@@ -22,7 +22,7 @@ def get_url(uri= ""):
 @app.get("/dht/hat")
 def get_hat():
     url = get_url("hat")
-    response = requests.get(url=url)
+    response = requests.get(url=url, timeout=DEFAULT_TIMEOUT)
     response.raise_for_status()
 
     data = response.json()
@@ -41,7 +41,7 @@ def request_ir_decode(timeout=5000):
 @app.get("/ir/result_decode")
 def get_ir_decode():
     url = get_url(uri="ir/result_decode")
-    response = requests.get(url)
+    response = requests.get(url, timeout=DEFAULT_TIMEOUT)
     response.raise_for_status()
     return json.loads(response.text)
 
@@ -49,7 +49,7 @@ def get_ir_decode():
 @app.post(path="/ir/poweroff")
 def ir_power_off():
     url = get_url(uri="ir/poweroff")
-    response = requests.post(url=url)
+    response = requests.post(url=url, timeout=DEFAULT_TIMEOUT)
     response.raise_for_status()
     couchdb.update_aircon_status(power=False)
     return json.loads(response.text)
@@ -58,7 +58,7 @@ def ir_power_off():
 @app.post(path="/ir/poweron")
 def ir_power_on():
     url = get_url(uri="ir/poweron")
-    response = requests.post(url)
+    response = requests.post(url, timeout=DEFAULT_TIMEOUT)
     response.raise_for_status()
     couchdb.update_aircon_status(power=True)
     return json.loads(response.text)
@@ -67,7 +67,7 @@ def ir_power_on():
 @app.post("/ir/temperature")
 def ir_adjust_temperature(temp: int = 25):
     url = get_url(uri="ir/temperature")
-    response = requests.post(url=url, data={"value": temp})
+    response = requests.post(url=url, data={"value": temp}, timeout=DEFAULT_TIMEOUT)
     response.raise_for_status()
     couchdb.update_aircon_status(temp=temp)
     return json.loads(response.text)
@@ -76,7 +76,7 @@ def ir_adjust_temperature(temp: int = 25):
 @app.post(path="/ir/wind")
 def ir_adjust_wind(wind: int = 4):
     url = get_url(uri="ir/wind")
-    response = requests.post(url=url, data={"value": wind})
+    response = requests.post(url=url, data={"value": wind}, timeout=DEFAULT_TIMEOUT)
     response.raise_for_status()
     couchdb.update_aircon_status(windDayeon=wind)
     return json.loads(response.text)
@@ -85,7 +85,7 @@ def ir_adjust_wind(wind: int = 4):
 @app.get(path="/ir/status")
 def ir_status():
     url = get_url(uri="ir/status")
-    response = requests.get(url=url)
+    response = requests.get(url=url, timeout=DEFAULT_TIMEOUT)
     response.raise_for_status()
     return json.loads(response.text)
 
