@@ -52,7 +52,10 @@ def ir_power_off():
     response = requests.post(url=url, timeout=DEFAULT_TIMEOUT)
     response.raise_for_status()
     couchdb.update_aircon_status(power=False)
-    return json.loads(response.text)
+    return {
+            "status": "ok",
+            "message": response.text
+        }
 
 # %%
 @app.post(path="/ir/poweron")
@@ -61,7 +64,10 @@ def ir_power_on():
     response = requests.post(url, timeout=DEFAULT_TIMEOUT)
     response.raise_for_status()
     couchdb.update_aircon_status(power=True)
-    return json.loads(response.text)
+    return {
+            "status": "ok",
+            "message": response.text
+        }
 
 # %%
 @app.post("/ir/temperature")
@@ -70,7 +76,10 @@ def ir_adjust_temperature(temp: int = 25):
     response = requests.post(url=url, data={"value": temp}, timeout=DEFAULT_TIMEOUT)
     response.raise_for_status()
     couchdb.update_aircon_status(temp=temp)
-    return json.loads(response.text)
+    return {
+            "status": "ok",
+            "message": response.text
+        }
 
 # %%
 @app.post(path="/ir/wind")
@@ -79,7 +88,10 @@ def ir_adjust_wind(wind: int = 4):
     response = requests.post(url=url, data={"value": wind}, timeout=DEFAULT_TIMEOUT)
     response.raise_for_status()
     couchdb.update_aircon_status(windDayeon=wind)
-    return json.loads(response.text)
+    return {
+            "status": "ok",
+            "message": response.text
+        }
 
 # %%
 @app.get(path="/ir/status")
