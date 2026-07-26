@@ -4,6 +4,11 @@ from datetime import datetime, timezone
 from secret import *
 import logging
 
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s %(levelname)s %(name)s: %(message)s"
+)
+
 COUCH_URL = "http://100.108.137.1:5984"
 COUCH_DB = "homecontrol"
 
