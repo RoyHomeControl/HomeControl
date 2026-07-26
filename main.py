@@ -75,7 +75,7 @@ def ir_adjust_temperature(temp: int = 25):
     url = get_url(uri="ir/temperature")
     response = requests.post(url=url, data={"value": temp}, timeout=DEFAULT_TIMEOUT)
     response.raise_for_status()
-    couchdb.update_aircon_status(temp=temp)
+    couchdb.update_aircon_status(temperature=temp)
     return {
             "status": "ok",
             "message": response.text
