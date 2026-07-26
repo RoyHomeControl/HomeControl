@@ -4,6 +4,7 @@ import requests, json
 import couchdb
 import datetime
 import logging
+from model import *
 
 logging.basicConfig(
     level=logging.INFO,
@@ -76,7 +77,8 @@ def ir_power_on():
 
 # %%
 @app.post("/ir/temperature")
-def ir_adjust_temperature(temp: int = 25):
+def ir_adjust_temperature(req: TemperatureRequest):
+    temp = req.temp
     url = get_url(uri="ir/temperature")
     response = requests.post(url=url, data={"value": temp}, timeout=DEFAULT_TIMEOUT)
     response.raise_for_status()
@@ -87,8 +89,8 @@ def ir_adjust_temperature(temp: int = 25):
         }
 
 # %%
-@app.post(path="/ir/wind")
-def ir_adjust_wind(wind: int = 4):
+def ir_adjust_wind(req: WindRequest):
+    wind = req.wind
     url = get_url(uri="ir/wind")
     response = requests.post(url=url, data={"value": wind}, timeout=DEFAULT_TIMEOUT)
     response.raise_for_status()
