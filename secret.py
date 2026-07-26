@@ -3,5 +3,5 @@ import os
 
 load_dotenv()
 
-COUCH_USER = os.getenv("COUCH_USER")
-COUCH_PASSWORD = os.getenv("COUCH_PASSWORD")
+COUCHDB_USER = os.getenv("COUCHDB_USER")
+COUCHDB_PASSWORD = os.getenv("COUCHDB_PASSWORD")

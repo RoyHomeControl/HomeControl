@@ -10,7 +10,7 @@ COUCH_DB = "homecontrol"
 def couch_get(doc_id: str):
     response = requests.get(
         f"{COUCH_URL}/{COUCH_DB}/{doc_id}",
-        auth=(COUCH_USER, COUCH_PASSWORD),
+        auth=(COUCHDB_USER, COUCHDB_PASSWORD),
     )
 
     response.raise_for_status()
@@ -20,7 +20,7 @@ def couch_get(doc_id: str):
 def couch_put(doc: dict):
     response = requests.put(
         f"{COUCH_URL}/{COUCH_DB}/{doc['_id']}",
-        auth=(COUCH_USER, COUCH_PASSWORD),
+        auth=(COUCHDB_USER, COUCHDB_PASSWORD),
         json=doc,
     )
 
@@ -48,7 +48,7 @@ def insert_dht_log(humidity, temperature):
 
     response = requests.post(
         f"{COUCH_URL}/{COUCH_DB}",
-        auth=(COUCH_USER, COUCH_PASSWORD),
+        auth=(COUCHDB_USER, COUCHDB_PASSWORD),
         json=doc,
     )
 
