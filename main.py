@@ -69,7 +69,7 @@ def ir_power_on():
     url = get_url(uri="ir/poweron")
     response = requests.post(url, timeout=DEFAULT_TIMEOUT)
     response.raise_for_status()
-    couchdb.update_aircon_status(power=True)
+    couchdb.update_aircon_status(power=True, temperature=24, windDahyeon=4)
     return {
             "status": "ok",
             "message": response.text
