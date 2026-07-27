@@ -89,7 +89,7 @@ def ir_adjust_temperature(req: TemperatureRequest):
         }
 
 # %%
-@app.post("/ir/temperature")
+@app.post("/ir/wind")
 def ir_adjust_wind(req: WindRequest):
     wind = req.wind
     url = get_url(uri="ir/wind")
